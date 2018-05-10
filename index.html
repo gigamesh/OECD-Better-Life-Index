@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>OECD Better Life Index 2017</title>
+
+        <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta -->
+        <meta charset="utf-8"/>
+        <meta content="initial-scale=1, width=device-width" name="viewport"/>
+
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/combine/npm/lodash@4.17.10,npm/lodash@4.17.10/cloneDeep.min.js"></script>
+
+        <!-- http://getbootstrap.com/ -->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+                <!-- http://jquery.com/ -->
+        <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+
+        <!-- http://getbootstrap.com/ -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+        <!-- app's own CSS -->
+        <link href="assets/styles.css" rel="stylesheet"/>
+    </head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>OECD BETTER LIFE INDEX 2013-2017</h1>
+            <p>The Organisation for Economic Co-operation and Development is an intergovernmental economic organisation with 35 member countries, founded in 1960 to stimulate economic progress and world trade.
+            The data in this visualization was gathered from the <a href="http://stats.oecd.org/Index.aspx?DataSetCode=BLI#" target="_blank">OECD stats page</a>.
+        </div>
+
+        <div class="tab">
+            <a class="tablinks active" onclick="toggleClass(this)" id="IW_HADI">Household Income
+            <span class="info">Household Income: The maximum amount that a household can afford to consume without having to reduce its assets or to increase its liabilities.</span></span></a>
+            <a class="tablinks" onclick="toggleClass(this)" id="IW_HNFW">Household Net Wealth
+            <span class="info">Household Net Wealth: currency and deposits, securities other than share, loans, shares and other equity (including shares issued by investment funds), insurance technical reserves, and other accounts receivable or payable, net of household financial liabilities.</span></span></a>
+            <a class="tablinks" onclick="toggleClass(this)" id="JE_LTUR">Unemployment Rate
+            <span class="info">Unemployment Rate: The number of persons who have been unemployed for one year or more as a percentage of the labour force (the sum of employed and unemployed persons). Unemployed persons are defined as those who are currently not working but are willing to do so and actively searching for work.</span></span></a>
+            <a class="tablinks" onclick="toggleClass(this)" id="JE_PEARN">Personal Earnings
+            <span class="info">Personal Earnings: The average annual wages per full-time equivalent dependent employee, which are obtained by dividing the national-accounts-based total wage bill by the average number of employees in the total economy, which is then multiplied by the ratio of average usual weekly hours per full-time employee to average usually weekly hours for all employees. It considers the employees’ gross remuneration, that is, the total before any deductions are made by the employer in respect of taxes, contributions of employees to social security and pension schemes, life insurance premiums, union dues and other obligations of employees.</span></a>
+            <a class="tablinks" onclick="toggleClass(this)" id="SC_SNTWS">Social Network Support
+            <span class="info">Social Network Support: This indicator is based on the question: “If you were in trouble, do you have relatives or friends you can count on to help you whenever you need them, or not?” and it considers the respondents who respond positively.</span></a>
+            <a class="tablinks" onclick="toggleClass(this)" id="ES_EDUA">Educational Attainment
+            <span class="info">Educational attainment considers the number of adults aged 25 to 64 holding at least an upper secondary degree over the population of the same age, as defined by the OECD-ISCED classification.</span></a>
+            <a class="tablinks" onclick="toggleClass(this)" id="ES_EDUEX">Years In Education
+            <span class="info">Years In Education: This indicator is the average duration of education in which a 5 year old child can expect to enrol during his/her lifetime until the age of 39. It is calculated under the current enrolment conditions by adding the net enrolment rates for each single year of age from the age of five onwards.</span></a>
+            <a class="tablinks" onclick="toggleClass(this)" id="EQ_AIRP">Air Pollution
+            <span class="info">Air Pollution: The indicator is the population weighted average of annual concentrations of particulate matters less than 2.5 microns in diameter (PM2.5) in the air.</span></a>
+            <a class="tablinks" onclick="toggleClass(this)" id="EQ_WATER">Water Quality
+            <span class="info">Water Quality: The indicator captures people's subjective appreciation of the environment where they live, in particular the quality of the water. It is based on the question: "In the city or area where you live, are you satisfied or dissatisfied with the quality of water?" and it considers people who responded they are satisfied.</span></a>
+            <a class="tablinks" onclick="toggleClass(this)" id="CG_VOTO">Voter Turnout
+            <span class="info">Voter turnout is here defined as the ratio between the number of individuals that cast a ballot during an election (whether this vote is valid or not) to the population registered to vote. As institutional features of voting systems vary a lot across countries and across types of elections, the indicator refers to the elections (parliamentary or presidential) that have attracted the largest number of voters in each country.</span></a>
+            <a class="tablinks" onclick="toggleClass(this)" id="HS_LEB">Life Expectancy
+            <span class="info">Life expectancy measures how long on average people could expect to live based on the age-specific death rates currently prevailing. This measure refers to people born today and is computed as a weighted average of life expectancy for men and women.</span></a>
+            <a class="tablinks" onclick="toggleClass(this)" id="HS_SFRH">Self-reported Health
+            <span class="info">Self-reported Health: This indicator refers to the percentage of the population aged 15 years old and over who report “good” or better health. The WHO recommends using a standard health interview survey to measure it, phrasing the question as “How is your health in general?” with response scale “It is very good/ good/ fair/ bad/ very bad”.</span></a>
+            <a class="tablinks" onclick="toggleClass(this)" id="SW_LIFS">Life Satisfaction
+            <span class="info">Life Satisfaction: This indicator considers people's evaluation of their life as a whole. It is a weighted-sum of different response categories based on people's rates of their current life relative to the best and worst possible lives for them on a scale from 0 to 10, using the Cantril Ladder (known also as the "Self-Anchoring Striving Scale").</span></a>
+            <a class="tablinks" onclick="toggleClass(this)" id="PS_REPH">Homicide Rate
+            <span class="info">Homicide rate (the number of murders per 100 000 inhabitants) only represents the most extreme form of contact crime and thus does not provide information about more typical safety conditions. It is however a more reliable measure of a country’s safety level because, unlike other crimes, murders are usually always reported to the police.</span></a>
+            <a class="tablinks" onclick="toggleClass(this)" id="WL_TNOW">Time Devoted To Leisure
+            <span class="info">Time Devoted To Leisure: This indicator measures the amount of minutes (or hours) per day that, on average, full-time employed people spend on leisure and on personal care activities.</span></a>
+        </div>
+        <div class="svg"></div>
+
+        <!-- D3 -->
+        <script src="assets/d3-dsv.v1.min.js" charset="utf-8"></script>
+        <script src="assets/d3-fetch.v1.min.js" charset="utf-8"></script>
+        <script src="assets/d3.min.js" charset="utf-8"></script>
+        <!-- <script src="assets/d3.v3.js" charset="utf-8"></script> -->
+        <!-- app's own JavaScript -->
+        <script src="assets/OECD.js"></script>
+
+</body>
+</html>

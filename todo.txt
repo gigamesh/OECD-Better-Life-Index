@@ -1,0 +1,5 @@
+-add countries w/ flags
+-varying units of measurement
+-fix infobox (relative to mouse)
+-increase letter spacing on title
+-stack buttons vertically on left side

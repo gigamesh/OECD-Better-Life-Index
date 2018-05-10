@@ -1,0 +1,204 @@
+@import url('https://fonts.googleapis.com/css?family=Comfortaa');
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    width: 1400px;
+    position: relative;
+    margin: auto;
+    text-align: center;
+}
+
+.header {
+    width: 70%;
+    margin: 0 auto;
+    line-height: 18px;
+}
+
+.header h1 {
+    /* font-family: 'Comfortaa', cursive; */
+    font-weight: bold;
+
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+    width: 90%;
+    text-align: center;
+    margin: auto;
+}
+
+.svg {
+    height: 60%;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    position: center;
+}
+
+svg {
+    height: 100%;
+    width: 100%;
+    position: center;
+
+}
+path.slice{
+    stroke-width:2px;
+}
+text{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+polyline{
+    opacity: .3;
+    stroke: black;
+    stroke-width: 2px;
+    fill: none;
+}
+.labelValue
+{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 60%;
+    opacity: .5;
+}
+label {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: normal;
+}
+.toolTip {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    position: absolute;
+    display: none;
+    width: auto;
+    height: auto;
+    background: none repeat scroll 0 0 white;
+    border: 1px solid #bbb;
+    border-radius: 3px;
+    box-shadow: -3px 3px 15px #888888;
+    color: black;
+    font: 12px sans-serif;
+    padding: 5px;
+    text-align: center;
+}
+.legend {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 60%;
+}
+rect {
+    stroke-width: 2;
+}
+text {
+    font: 12px sans-serif;
+}
+text.value{
+    font-size: 200%;
+    fill: white;
+}
+text.label{
+    font-size: 100%;
+}
+.axis text {
+    font: 12px sans-serif;
+}
+.axis path{
+    fill: none;
+    stroke: #000;
+}
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+.axis .tick line {
+    stroke-width: 1;
+    stroke: rgba(0, 0, 0, 0.2);
+}
+.axisHorizontal path{
+    fill: none;
+}
+.axisHorizontal line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+.axisHorizontal .tick line {
+    stroke-width: 1;
+    stroke: rgba(0, 0, 0, 0.2);
+}
+.bar {
+    /*fill: steelblue;*/
+    fill-opacity: .9;
+}
+.x.axis path {
+    display: none;
+}
+
+.tab {
+    overflow: hidden;
+    background-color: #f1f1f1;
+    width: 100%;
+    height: 60px;
+    font: 11px sans-serif;
+    display: flex;
+    margin: 20px 0 0 0;
+}
+
+.tab a {
+    background-color: inherit;
+    border: 1px solid #aaa;
+    outline: none;
+    cursor: pointer;
+    transition: 0.3s;
+    text-decoration: none;
+    text-align: center;
+    vertical-align: middle;
+    color: #555
+}
+
+a:hover {
+    background-color: #ddd;
+}
+
+ a:hover .info {
+    display: block;
+    background-color: white;
+}
+
+.info {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    position: absolute;
+    display: none;
+    width: 200px;
+    height: auto;
+    background: none repeat scroll 0 0 white;
+    border: 1px solid #bbb;
+    border-radius: 3px;
+    box-shadow: -3px 3px 15px #888888;
+    color: black;
+    font: 14px sans-serif;
+    padding: 10px;
+    text-align: center;
+    margin-left: -280px;
+    margin-top: 30px;
+
+}
+
+.tab a.active {
+    color: steelblue;
+    border-top: 4px solid steelblue;
+    background-color: #ddd;
+    font-weight: bold;
+}
+
+.tablinks {
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center; /* align vertical */
+    height: auto;
+    width: 6.66%;
+    flex-grow: 1;
+
+}
+
+.toolTip {
+  font-size: 16px
+}
