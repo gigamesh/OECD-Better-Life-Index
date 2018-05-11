@@ -1,8 +1,9 @@
 /*
 TODO:
--fix async
--add units
 -add year selector
+-add units
+-fix tooltip (bold country, add currency)
+-fix range/scale so it's not always from zero
 -responsive: scrolling menu
 */
 //=============START ==============//
@@ -26,10 +27,11 @@ const categories = [
   'WL_TNOW'
 ]
 
+// $(".tab").slick();
+
 function getdata(category, year){
-  let graphdata = [];
   let yearFile = `assets/data/BLI${year}.csv`;
-  d3.csv(yearFile).then(function(data) {
+  return d3.csv(yearFile).then(function(data) {
     if(currentYear != year){
       currentYear = year;
       let formattedCSV = [];
@@ -53,12 +55,19 @@ function getdata(category, year){
     }
     return yearData;
   }).then(d=>{
+    let graphdata = [];
     let catObj = d.find(val=> {
       return val.Category === category;
     })
-    catObj =  _.clone(catObj);
-    delete catObj.Category;
 
+//clone object and remove uneeded data (the deleted countries aren't officially in the OECD)
+    catObj =  _.clone(catObj);
+    let remove = ['Category','Slovak Republic','Latvia', 'OECD - Total','South Africa'];
+    for(let key in catObj){
+        if(remove.includes(key)){
+          delete catObj[key];
+        }
+    }
     for(let key in catObj){
       let row = {
         label: key,
@@ -66,8 +75,15 @@ function getdata(category, year){
       }
       graphdata.push(row);
     }
+    return graphdata;
+  }).then(graphdata=>{
+
+    //sort alphabetically
+    graphdata.sort(function(a, b) {
+        return (a.label < b.label) ? -1 : (a.label > b.label) ? 1 : 0;
+    });
+    return graphdata;
   });
-  return graphdata;
 }
 
 // show user which tab is active
@@ -91,19 +107,14 @@ function fn(e) {
     }
 }
 
-
-// D3 chart template from Juan Cruz-Benito -- http://bl.ocks.org/juan-cb/1afee8f2cae799e86707
-// The MIT License (MIT) Copyright (c) 2015 Juan Cruz-Benito. http://juancb.es
-
-
 //d3 elements
 
-var colors = ["#85D1A7", "#F4D35E", "#EE964B", "#F95738", "#4d7faf"];
+var colors = ["#85D1A7", "#F4D35E", "#EE964B", "#F95738", "#5895d0"];
 
 var margin = {
   top: (parseInt(d3.select('.svg').style('height'), 10)/20),
-  right: (parseInt(d3.select('.svg').style('width'), 10)/20),
-  bottom: (parseInt(d3.select('.svg').style('height'), 10)/4),
+  right: (parseInt(d3.select('.svg').style('width'), 10)/50),
+  bottom: (parseInt(d3.select('.svg').style('height'), 10)/6),
   left: (parseInt(d3.select('.svg').style('width'), 10)/20)
   },
   width = parseInt(d3.select('.svg').style('width'), 10) - margin.left - margin.right,
@@ -133,16 +144,16 @@ svg.append("g")
         .call(xAxis);
 
 d3.selectAll("a").on("click", selectDataset);
-function selectDataset(){
-    let graphdata = getdata(this.id, currentYear);
-    setTimeout(()=>{
-      updateGraph(graphdata)
-    },100);
+async function selectDataset(){
+    let graphdata = await getdata(this.id, currentYear);
+    updateGraph(graphdata)
 }
 
 //initialize graph
-let init = getdata("IW_HADI", 2017);
-setTimeout(()=>{updateGraph(init);},300);
+(async function(){
+  let init = await getdata("IW_HADI", 2017);
+  updateGraph(init);
+})();
 
 // d3 function
 function updateGraph(dataset) {
@@ -154,7 +165,6 @@ function updateGraph(dataset) {
         .call(xAxis)
             .selectAll("text")
                 .style("text-anchor", "end")
-                .style("font-size", "16px")
                 .attr("dx", "-.8em")
                 .attr("dy", ".15em")
                 .attr("transform", function(d) {

@@ -1,35 +1,84 @@
 @import url('https://fonts.googleapis.com/css?family=Comfortaa');
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,900');
+
+:root {
+  --main-bg-color: #333;
+}
+
+::-webkit-scrollbar {
+    height: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #999;
+}
+
 body {
+    margin: 0;
+    background: #f8f8f8;
+    color: var(--main-bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    width: 1400px;
-    position: relative;
-    margin: auto;
+    /* max-width: 1400px; */
+    width: 100vw;
+    height: 100vh;
     text-align: center;
+    box-sizing: border-box;
+    /* border-left: 1px solid var(--main-bg-color);
+    border-right: 1px solid var(--main-bg-color); */
+}
+
+a {
+  color: steelblue
+}
+
+h1, h2, h3, h4, h5 {
+  margin: 15px auto;
+}
+
+p {
+  margin: 10px auto
 }
 
 .header {
-    width: 70%;
+    min-width: 60%;
     margin: 0 auto;
-    line-height: 18px;
 }
 
 .header h1 {
-    /* font-family: 'Comfortaa', cursive; */
-    font-weight: bold;
-
+    margin-top: 0;
+    line-height: 90%;
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 900;
 }
+
+.header div {
+   white-space: pre;
+  display: inline-block;
+}
+
 .container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    height: 100vh;
+    justify-content: space-between;
+    height: 90%;
     width: 90%;
+    max-width: 1400px;
     text-align: center;
-    margin: auto;
+    /* margin: 3vh 5vw; */
 }
 
 .svg {
-    height: 60%;
+    height: 70%;
     width: 100%;
     margin: 0 auto;
     text-align: center;
@@ -50,7 +99,7 @@ text{
 }
 polyline{
     opacity: .3;
-    stroke: black;
+    stroke: var(--main-bg-color);
     stroke-width: 2px;
     fill: none;
 }
@@ -65,18 +114,17 @@ label {
     font-weight: normal;
 }
 .toolTip {
+    z-index: 10;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     position: absolute;
     display: none;
     width: auto;
     height: auto;
     background: none repeat scroll 0 0 white;
-    border: 1px solid #bbb;
-    border-radius: 3px;
-    box-shadow: -3px 3px 15px #888888;
-    color: black;
-    font: 12px sans-serif;
-    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 0 0 25px #555;
+    font: 16px sans-serif;
+    padding: 10px;
     text-align: center;
 }
 .legend {
@@ -87,7 +135,7 @@ rect {
     stroke-width: 2;
 }
 text {
-    font: 12px sans-serif;
+
 }
 text.value{
     font-size: 200%;
@@ -96,16 +144,16 @@ text.value{
 text.label{
     font-size: 100%;
 }
-.axis text {
-    font: 12px sans-serif;
+.x.axis {
+  font-size: 14px
 }
 .axis path{
     fill: none;
-    stroke: #000;
+    stroke: var(--main-bg-color);
 }
 .axis line {
     fill: none;
-    stroke: #000;
+    stroke: var(--main-bg-color);
     shape-rendering: crispEdges;
 }
 .axis .tick line {
@@ -117,12 +165,12 @@ text.label{
 }
 .axisHorizontal line {
     fill: none;
-    stroke: #000;
+    stroke: var(--main-bg-color);
     shape-rendering: crispEdges;
 }
 .axisHorizontal .tick line {
     stroke-width: 1;
-    stroke: rgba(0, 0, 0, 0.2);
+    stroke: var(--main-bg-color);
 }
 .bar {
     /*fill: steelblue;*/
@@ -132,36 +180,79 @@ text.label{
     display: none;
 }
 
+.direction-button {
+  cursor: pointer;
+  height: 50px;
+  margin: auto
+}
+
+.direction-button.left { margin-right: 20px;}
+.direction-button.right { margin-left: 20px;}
+
 .tab {
-    overflow: hidden;
-    background-color: #f1f1f1;
-    width: 100%;
-    height: 60px;
-    font: 11px sans-serif;
-    display: flex;
-    margin: 20px 0 0 0;
+  display: flex;
+  align-items: center;
+  margin: 20px 0 0 0;
+}
+
+.tab-innerwrap {
+  height: 80px;
+  overflow-y:hidden;
+  overflow-x: scroll;
+  background-color: #fff;
+  max-width: 100%;
+  font: 15px sans-serif;
+  display: flex;
+  display: flex;
 }
 
 .tab a {
+    font-weight: bold;
+    padding: 6px;
+    width: 110px;
+    flex-shrink: 0;
     background-color: inherit;
-    border: 1px solid #aaa;
+    border-left: 1px solid #aaa;
+    border-top: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
     outline: none;
     cursor: pointer;
     transition: 0.3s;
     text-decoration: none;
     text-align: center;
     vertical-align: middle;
-    color: #555
+    color: #888
+}
+
+
+.tab a.active {
+    color: steelblue;
+    border-top: 4px solid steelblue;
+    background-color: #eee;
+}
+
+
+.tablinks {
+  user-select: none;
+    cursor:  -webkit-grab;
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center; /* align vertical */
+    height: auto;
+    width: 100px;
+    flex-grow: 1;
+
 }
 
 a:hover {
-    background-color: #ddd;
+    background-color: #eee;
 }
 
- a:hover .info {
+/* a:hover .info {
+
     display: block;
     background-color: white;
-}
+} */
 
 .info {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -170,35 +261,14 @@ a:hover {
     width: 200px;
     height: auto;
     background: none repeat scroll 0 0 white;
-    border: 1px solid #bbb;
-    border-radius: 3px;
-    box-shadow: -3px 3px 15px #888888;
-    color: black;
+    border-radius: 5px;
+    box-shadow: 0 0 25px #555;
     font: 14px sans-serif;
     padding: 10px;
     text-align: center;
     margin-left: -280px;
     margin-top: 30px;
-
 }
 
-.tab a.active {
-    color: steelblue;
-    border-top: 4px solid steelblue;
-    background-color: #ddd;
-    font-weight: bold;
-}
 
-.tablinks {
-    display: flex;
-    justify-content: center; /* align horizontal */
-    align-items: center; /* align vertical */
-    height: auto;
-    width: 6.66%;
-    flex-grow: 1;
-
-}
-
-.toolTip {
-  font-size: 16px
-}
+/*------- HEADER TIMELINE ---------*/
