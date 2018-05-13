@@ -1,23 +1,14 @@
 @import url('https://fonts.googleapis.com/css?family=Comfortaa');
 @import url('https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,900');
+@import url('https://fonts.googleapis.com/css?family=Megrim');
 
 :root {
   --main-bg-color: #333;
 }
 
-::-webkit-scrollbar {
-    height: 6px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: #999;
-}
+/* ::-webkit-scrollbar {
+    display: none;
+} */
 
 body {
     margin: 0;
@@ -27,38 +18,56 @@ body {
     justify-content: center;
     align-items: center;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    /* max-width: 1400px; */
     width: 100vw;
+    min-height: 800px;
     height: 100vh;
     text-align: center;
     box-sizing: border-box;
-    /* border-left: 1px solid var(--main-bg-color);
-    border-right: 1px solid var(--main-bg-color); */
 }
 
 a {
   color: steelblue
 }
 
-h1, h2, h3, h4, h5 {
+h1, h2, h3 {
   margin: 15px auto;
 }
 
+h4 {
+  font-weight: normal;
+  font-size: 1.2em;
+  margin: 0 auto;
+}
+
 p {
-  margin: 10px auto
+  margin: 5px auto
+}
+
+/* strong { font-size: 1.2em} */
+
+.container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 93%;
+    width: 92%;
+    max-width: 1200px;
+    text-align: center;/
 }
 
 .header {
     min-width: 60%;
     margin: 0 auto;
+    max-width: 90%;
 }
 
 .header h1 {
     margin-top: 0;
     line-height: 90%;
     font-family: 'Playfair Display', serif;
-    font-size: 3.5rem;
     font-weight: 900;
+    font-size: 4em;
 }
 
 .header div {
@@ -66,31 +75,13 @@ p {
   display: inline-block;
 }
 
-.container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 90%;
-    width: 90%;
-    max-width: 1400px;
-    text-align: center;
-    /* margin: 3vh 5vw; */
-}
-
 .svg {
-    height: 70%;
+    height: 100%;
     width: 100%;
     margin: 0 auto;
     text-align: center;
-    position: center;
 }
 
-svg {
-    height: 100%;
-    width: 100%;
-    position: center;
-
-}
 path.slice{
     stroke-width:2px;
 }
@@ -118,14 +109,23 @@ label {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     position: absolute;
     display: none;
-    width: auto;
-    height: auto;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 220px;
+    height: 160px;
     background: none repeat scroll 0 0 white;
     border-radius: 5px;
     box-shadow: 0 0 25px #555;
     font: 16px sans-serif;
-    padding: 10px;
+    padding: 10px 10px 0;
     text-align: center;
+}
+.toolTip p {
+  font-size: 14px
+}
+.info {
+    display: none;
 }
 .legend {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -134,30 +134,29 @@ label {
 rect {
     stroke-width: 2;
 }
-text {
-
-}
 text.value{
-    font-size: 200%;
+    font-size: 100%;
     fill: white;
 }
+
 text.label{
     font-size: 100%;
 }
-.x.axis {
+
+.axis {
   font-size: 14px
 }
 .axis path{
     fill: none;
-    stroke: var(--main-bg-color);
+    stroke: rgba(0, 0, 0, 0.2);
 }
 .axis line {
     fill: none;
-    stroke: var(--main-bg-color);
+    stroke: rgba(0, 0, 0, 0.2);
     shape-rendering: crispEdges;
 }
 .axis .tick line {
-    stroke-width: 1;
+    stroke-width: .5;
     stroke: rgba(0, 0, 0, 0.2);
 }
 .axisHorizontal path{
@@ -165,110 +164,170 @@ text.label{
 }
 .axisHorizontal line {
     fill: none;
-    stroke: var(--main-bg-color);
+    stroke: rgba(0, 0, 0, 0.2);
     shape-rendering: crispEdges;
 }
 .axisHorizontal .tick line {
-    stroke-width: 1;
-    stroke: var(--main-bg-color);
+    stroke-width: .5;
+    stroke: rgba(0, 0, 0, 0.2);
 }
 .bar {
     /*fill: steelblue;*/
     fill-opacity: .9;
 }
 .x.axis path {
-    display: none;
+    /* display: none; */
 }
 
-.direction-button {
+.direction-arrow {
+  display: inline-block;
+  font-family: 'Megrim', cursive;
+  color: #888;
   cursor: pointer;
-  height: 50px;
-  margin: auto
 }
 
-.direction-button.left { margin-right: 20px;}
-.direction-button.right { margin-left: 20px;}
+.direction-arrow.big {
+  font-size: 4em;
+  line-height: 100%;
+  margin: 0 15px;
+}
+
+.direction-arrow:hover {
+  color: var(--main-bg-color);
+}
 
 .tab {
+  width: 90%;
+  margin: 0 auto;
   display: flex;
+  justify-content: center;
   align-items: center;
-  margin: 20px 0 0 0;
 }
 
 .tab-innerwrap {
-  height: 80px;
-  overflow-y:hidden;
-  overflow-x: scroll;
-  background-color: #fff;
-  max-width: 100%;
-  font: 15px sans-serif;
-  display: flex;
-  display: flex;
+  margin: 0 10px;
+  border-top: 1px solid #888;
+  border-bottom: 1px solid #888;
+  position: relative;
+  overflow: hidden;
+  font: 1em sans-serif;
 }
 
-.tab a {
-    font-weight: bold;
-    padding: 6px;
-    width: 110px;
-    flex-shrink: 0;
-    background-color: inherit;
-    border-left: 1px solid #aaa;
-    border-top: 1px solid #aaa;
-    border-bottom: 1px solid #aaa;
-    outline: none;
-    cursor: pointer;
-    transition: 0.3s;
-    text-decoration: none;
-    text-align: center;
-    vertical-align: middle;
-    color: #888
+.slick-slide {
+  font-weight: bold;
+  transition: 0.3s;
+  text-decoration: none;
+  text-align: center;
+  vertical-align: middle;
 }
-
-
-.tab a.active {
-    color: steelblue;
-    border-top: 4px solid steelblue;
-    background-color: #eee;
-}
-
 
 .tablinks {
+  display: block;
+  margin: auto;
+  padding: 6px;
+  color: #888;
+  outline: none;
+  cursor: pointer;
   user-select: none;
-    cursor:  -webkit-grab;
-    display: flex;
-    justify-content: center; /* align horizontal */
-    align-items: center; /* align vertical */
-    height: auto;
+}
+
+.slick-track {
+  height: 50px;
+}
+
+.slick-slide {
+  cursor:  -webkit-grab;
+  background-color: inherit;
+  outline: none;
+}
+
+.slick-initialized .slick-slide {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.tablinks.active {
+    color: steelblue;
+}
+
+.is-hover,.is-active {
+  background-color: #eee;
+}
+
+#unit {
+  margin: 0 auto;
+}
+
+/* ===========================YEAR SELECTOR=========================== */
+
+.amountSlider {
+  user-select: none;
+  width: 240px;
+  position: relative;
+  font-size: 45px;
+  margin: 0 auto 6px;
+}
+
+.amountHold {
+  display: inline-block;
+  user-select: none;
+  font-family: 'Playfair Display', serif;
+  width: 45%;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 1;
+  position: relative;
+  overflow: hidden;
+  height: 45px;
+  font-size: 1em
+  }
+.amountHold span {
+  line-height: 90%;
+  margin: 0 5px;
+  display: inline-block;
+  position: absolute;
+  width: 100%;
+	-webkit-transition: all 0.5s ease-in-out;
+	-moz-transition: all 0.5s ease-in-out;
+	-o-transition: all 0.5s ease-in-out;
+	-ms-transition: all 0.5s ease-in-out;
+	transition: all 0.5s ease-in-out;
+}
+.amountHold span.active { left: 50%; margin-left: -50%; }
+
+span.previous { left: -100%; }
+span.next { left: 100%; }
+
+.direction-arrow.small {
+  font-size: 1em;
+  line-height: 80%;
+}
+
+/* ===========================MEDIA QUERIES================================== */
+@media screen and (max-width: 600px), (max-height: 450px){
+
+  body {
+    font-size: 12px;
+  }
+  .tablinks {
     width: 100px;
-    flex-grow: 1;
+  }
+  .header h1 {
+    font-size: 3em;
+  }
 
+  .axis {
+    font-size: 11px
+  }
+
+  .slick-track {
+    height: 40px;
+  }
+
+  .direction-arrow.big { margin: 0 5px}
+
+  .amountSlider { width: 130px; position: relative; font-size: 25px; margin: 10px auto;}
+  .amountHold { height: 25px;}
 }
-
-a:hover {
-    background-color: #eee;
-}
-
-/* a:hover .info {
-
-    display: block;
-    background-color: white;
-} */
-
-.info {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    position: absolute;
-    display: none;
-    width: 200px;
-    height: auto;
-    background: none repeat scroll 0 0 white;
-    border-radius: 5px;
-    box-shadow: 0 0 25px #555;
-    font: 14px sans-serif;
-    padding: 10px;
-    text-align: center;
-    margin-left: -280px;
-    margin-top: 30px;
-}
-
-
-/*------- HEADER TIMELINE ---------*/

@@ -1,38 +1,177 @@
 /*
 TODO:
--add year selector
--add units
--fix tooltip (bold country, add currency)
--fix range/scale so it's not always from zero
--responsive: scrolling menu
+-swap explantory text
 */
 //=============START ==============//
-let currentYear;
+let currentYear = 2013;
+let currentCategory = "IW_HADI"
 let yearData = [];
+let unit = "USD";
 const categories = [
-  'IW_HADI',
-  'IW_HNFW',
-  'JE_LTUR',
-  'JE_PEARN',
-  'SC_SNTWS',
-  'ES_EDUA',
-  'ES_EDUEX',
-  'EQ_AIRP',
-  'EQ_WATER',
-  'CG_VOTO',
-  'HS_LEB',
-  'HS_SFRH',
-  'SW_LIFS',
-  'PS_REPH',
-  'WL_TNOW'
+  {name: 'IW_HADI', unit: 'USD'},
+  {name: 'IW_HNFW', unit: 'USD'},
+  {name: 'JE_LTUR', unit: 'Percentage'},
+  {name: 'JE_PEARN', unit: 'USD'},
+  {name: 'SC_SNTWS', unit: 'Percentage'},
+  {name: 'ES_EDUA', unit: 'Percentage'},
+  {name: 'ES_EDUEX', unit: 'Years'},
+  {name: 'EQ_AIRP', unit: 'Mcg / m3'},
+  {name: 'EQ_WATER', unit: 'Percentage'},
+  {name: 'CG_VOTO', unit: 'Percentage'},
+  {name: 'HS_LEB', unit: 'Years'},
+  {name: 'HS_SFRH', unit: 'Percentage'},
+  {name: 'SW_LIFS', unit: '(Avg Score)'},
+  {name: 'PS_REPH', unit: 'Murders Per 100k Inhabitants'},
+  {name: 'WL_TNOW', unit: 'Hours Per Year'}
 ]
 
-// $(".tab").slick();
+const empty = [
+{label: "Australia", value: 0},
+{label: "Austria", value: 0},
+{label: "Belgium", value: 0},
+{label: "Brazil", value: 0},
+{label: "Canada", value: 0},
+{label: "Chile", value: 0},
+{label: "Czech Republic", value: 0},
+{label: "Denmark", value: 0},
+{label: "Estonia", value: 0},
+{label: "Finland", value: 0},
+{label: "France", value: 0},
+{label: "Germany", value: 0},
+{label: "Greece", value: 0},
+{label: "Hungary", value: 0},
+{label: "Iceland", value: 0},
+{label: "Ireland", value: 0},
+{label: "Israel", value: 0},
+{label: "Italy", value: 0},
+{label: "Japan", value: 0},
+{label: "Korea", value: 0},
+{label: "Luxembourg", value: 0},
+{label: "Mexico", value: 0},
+{label: "Netherlands", value: 0},
+{label: "New Zealand", value: 0},
+{label: "Norway", value: 0},
+{label: "Poland", value: 0},
+{label: "Portugal", value: 0},
+{label: "Russia", value: 0},
+{label: "Slovenia", value: 0},
+{label: "Spain", value: 0},
+{label: "Sweden", value: 0},
+{label: "Switzerland", value: 0},
+{label: "Turkey", value: 0},
+{label: "United Kingdom", value: 0},
+{label: "United States", value: 0}
+]
 
-function getdata(category, year){
+//============CATEGORY SELECTOR ===============/
+
+$(".tab-innerwrap").slick({
+  prevArrow: $('#button-left-big'),
+  nextArrow: $('#button-right-big'),
+  slidesToShow: 2,
+  slidesToScroll: 2,
+  infinite: false,
+  mobileFirst:true,
+  variableWidth: false,
+  responsive: [
+    {
+      breakpoint: 500,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 2
+      }
+    },
+      {
+        breakpoint: 800,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 3
+        }
+    },
+      {
+        breakpoint: 1100,
+        settings: {
+          slidesToShow: 5,
+          slidesToScroll: 3
+        }
+    },
+      {
+        breakpoint: 1400,
+        settings: {
+          slidesToShow: 6,
+          slidesToScroll: 3
+        }
+    }
+  ]
+});
+
+$(`#${currentCategory}`).parents().eq(2).addClass('is-active');
+
+$('.tablinks').on('mouseover', function(){
+  $(this).parents().eq(2).addClass('is-hover');
+}).on('mouseout', function(){
+  $(this).parents().eq(2).removeClass('is-hover');
+});
+
+$('.tablinks').on('click', (e)=>{
+  $(`#${currentCategory}`).parents().eq(2).removeClass('is-active');
+
+  $(e.target).parents().eq(2).addClass('is-active');
+})
+
+function toggleClass(tablink){
+    var tablinks = document.querySelectorAll(".tablinks");
+
+    for(var i =0; i < tablinks.length; i++){
+        tablinks[i].classList.remove("active");
+    }
+    tablink.classList.add("active");
+}
+
+d3.selectAll(".tablinks").on("click", selectDataset);
+function selectDataset(){
+    currentCategory = this.id;
+    let graphdata = getCategoryData(currentCategory);
+    unit = categories.find(cat=> currentCategory == cat.name).unit;
+    $('#unit').text(unit);
+    updateGraph(graphdata)
+}
+
+//=================YEAR SELECTOR===================//
+
+$("#button-left-small").click(function () {
+  var activeValue = $(this).siblings(".amountHold").children("span.active");
+  if(!activeValue.prev().hasClass("first")){
+    if (!$(activeValue).hasClass("first")){
+      $(activeValue).removeClass("active").addClass("next")
+      .prev().addClass("active").removeClass("next, previous");
+    }
+    activeValue = $(this).siblings(".amountHold").children("span.active");
+    year = activeValue.text();
+    changeYear(year);
+  }
+});
+
+$("#button-right-small").click(function () {
+  var activeValue = $(this).siblings(".amountHold").children("span.active");
+  if (!$(activeValue).hasClass("last"))
+      $(activeValue).removeClass("active").addClass("previous")
+  .next().addClass("active").removeClass("previous, next");
+  activeValue = $(this).siblings(".amountHold").children("span.active");
+  year = activeValue.text();
+  changeYear(year);
+});
+
+function changeYear(year){
+  currentYear = year
+  getYearData(currentYear).then((graphdata)=>{ updateGraph(graphdata)})
+}
+
+//=================DATA GETTER===================//
+
+function getYearData(year){
   let yearFile = `assets/data/BLI${year}.csv`;
   return d3.csv(yearFile).then(function(data) {
-    if(currentYear != year){
       currentYear = year;
       let formattedCSV = [];
       let catLength = categories.length;
@@ -40,9 +179,9 @@ function getdata(category, year){
         let row = {};
         let dataLength = data.length;
         for(let i = 0; i < dataLength; i++){
-          if(data[i].INDICATOR === categories[catIdx] && data[i].INEQUALITY === "TOT"){
+          if(data[i].INDICATOR === categories[catIdx].name && data[i].INEQUALITY === "TOT"){
             if(!row.Category){
-            row.Category = categories[catIdx];
+            row.Category = categories[catIdx].name;
             }
             row[data[i].Country] = data[i].Value;
           } else if(row.Category){
@@ -52,11 +191,14 @@ function getdata(category, year){
         formattedCSV.push(row);
       };
       yearData = formattedCSV;
-    }
-    return yearData;
-  }).then(d=>{
+  }).then(()=>{
+    return getCategoryData(currentCategory);
+  })
+}
+
+function getCategoryData(category){
     let graphdata = [];
-    let catObj = d.find(val=> {
+    let catObj = yearData.find(val=> {
       return val.Category === category;
     })
 
@@ -75,64 +217,38 @@ function getdata(category, year){
       }
       graphdata.push(row);
     }
-    return graphdata;
-  }).then(graphdata=>{
 
     //sort alphabetically
     graphdata.sort(function(a, b) {
         return (a.label < b.label) ? -1 : (a.label > b.label) ? 1 : 0;
     });
     return graphdata;
-  });
-}
+};
 
-// show user which tab is active
-function toggleClass(tablink){
-    var tablinks = document.querySelectorAll(".tablinks");
+//=================D3 SETUP===================//
 
-    for(var i =0; i < tablinks.length; i++){
-        tablinks[i].classList.remove("active");
-    }
-    tablink.classList.add("active");
-}
+let colors = ["#85D1A7", "#F4D35E", "#EE964B", "#F95738", "#5895d0"];
 
-//hovering info box
-var tooltip = document.querySelectorAll('.info');
-
-document.addEventListener('mousemove', fn, false);
-function fn(e) {
-    for (var i=tooltip.length; i--;) {
-        tooltip[i].style.left = e.pageX + 50 + 'px';
-        tooltip[i].style.top = e.pageY + 'px';
-    }
-}
-
-//d3 elements
-
-var colors = ["#85D1A7", "#F4D35E", "#EE964B", "#F95738", "#5895d0"];
-
-var margin = {
-  top: (parseInt(d3.select('.svg').style('height'), 10)/20),
-  right: (parseInt(d3.select('.svg').style('width'), 10)/50),
-  bottom: (parseInt(d3.select('.svg').style('height'), 10)/6),
-  left: (parseInt(d3.select('.svg').style('width'), 10)/20)
+let margin = {
+  top: 0,
+  right: (parseInt(d3.select('.svg').style('width'), 10)/15),
+  bottom: $( window ).width() > 600 ? 50 : 40,
+  left: $( window ).width() > 600 ? 120 : 95
   },
   width = parseInt(d3.select('.svg').style('width'), 10) - margin.left - margin.right,
   height = parseInt(d3.select('.svg').style('height'), 10) - margin.top - margin.bottom;
-var toolTip = d3.select(".svg").append("div").attr("class", "toolTip");
-var formatPercent = d3.format(".1f");
+let toolTip = d3.select(".svg").append("div").attr("class", "toolTip");
 
-var x = d3.scaleBand()
-        .rangeRound([0, width])
-        .paddingInner([0.1]);
+let x = d3.scaleLinear()
+        .range([0, width]);
 
-var y = d3.scaleLinear()
-        .range([height, 0]);
-var xAxis = d3.axisBottom(x).ticks(0);
-var yAxis = d3.axisLeft(y)
-        .ticks(10, "r");
+let y =  d3.scaleBand()
+        .rangeRound([0, height]);
 
-var svg = d3.select(".svg").append("svg")
+let xAxis = d3.axisBottom(x); //unitFormat()
+let yAxis = d3.axisLeft(y).ticks(0);
+
+let svg = d3.select(".svg").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
@@ -143,33 +259,39 @@ svg.append("g")
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis);
 
-d3.selectAll("a").on("click", selectDataset);
-async function selectDataset(){
-    let graphdata = await getdata(this.id, currentYear);
-    updateGraph(graphdata)
-}
+//=================GRAPH BUILDER===================//
 
-//initialize graph
-(async function(){
-  let init = await getdata("IW_HADI", 2017);
-  updateGraph(init);
-})();
-
-// d3 function
 function updateGraph(dataset) {
-    x.domain(dataset.map(function(d) { return d.label; }));
-    y.domain([0, d3.max(dataset, function(d) { return d.value; })]);
+  // console.log(dataset);
+
+    let upperBound = d3.max(dataset, function(d) { return d.value; });
+    let lowerBound = d3.min(dataset, function(d) { return d.value * .9 });
+    x.domain([lowerBound, upperBound]);
+    y.domain(dataset.map(function(d) { return d.label; }));
+    let tickNum = $(window).width() > 600 ? 10 : 5;
+
+    let currentTickFormat = function(){
+      switch(unit){
+        case "USD": return d => "$" + d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        case "Percentage": return d => d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "%";
+        default: return d3.format(",.0f");
+      }
+    }
+
+    let tickAngle = ()=>{
+      if(unit !== "USD"){ return 'rotate(0)'};
+        return 'rotate(-30)';
+    }
+
     svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
-        .call(xAxis)
+        .call(xAxis.ticks(tickNum).tickFormat(currentTickFormat()))
             .selectAll("text")
                 .style("text-anchor", "end")
-                .attr("dx", "-.8em")
-                .attr("dy", ".15em")
-                .attr("transform", function(d) {
-                    return "rotate(-45)"
-                    });
+                .attr("dx", "-.4em")
+                .attr("dy", ".3em")
+                .attr("transform", ()=> tickAngle());
 
     svg.select(".y.axis").remove();
     svg.select(".x.axis").remove();
@@ -187,10 +309,10 @@ function updateGraph(dataset) {
 
     bar.enter().append("rect")
         .attr("class", "bar")
-        .attr("x", function(d) { return x(d.label); })
-        .attr("y", function(d) { return y(d.value); })
-        .attr("height", function(d) { return height - y(d.value); })
-        .attr("width", x.bandwidth())
+        .attr("x", function(d) { return x(d.value) })
+        .attr("y", function(d) { return y(d.label) })
+        .attr("height", y.bandwidth())
+        .attr("width", function(d) { return width - x(d.value) })
         .attr("fill", function(d, i) {
             let color = i % colors.length;
             return colors[color];
@@ -199,22 +321,36 @@ function updateGraph(dataset) {
 
     bar
         .on("mousemove", function(d){
-            toolTip.style("left", d3.event.pageX-50+"px");
-            toolTip.style("top", d3.event.pageY+25+"px");
-            toolTip.style("display", "inline-block");
-            toolTip.html((d.label)+"<br>"+(d.value)+"")
+            toolTip.style("left", d3.mouse(this)[0]+60+"px");
+            toolTip.style("top", d3.mouse(this)[1]+50+"px");
+            toolTip.style("display", "flex");
+            toolTip.html(()=>{
+              let formatted = currentTickFormat()(d.value);
+              let append = '';
+              let info = $(`#${currentCategory} span`).text();
+              if(unit !=='USD' && unit !== 'Percentage'){
+                append = unit;
+              }
+              return `<h4><strong>${d.label}: </strong>${formatted} ${append}</h4><p>${info}</p>`
+            });
         });
-    bar
-        .on("mouseout", function(d){
+
+    bar.on("mouseout", function(d){
             toolTip.style("display", "none");
         });
     // removed data:
     bar.exit().remove();
     // updated data:
-    bar
-        .transition()
+    bar.transition()
         .duration(500)
-        .attr("y", function(d) { return y(d.value); })
-        .attr("height", function(d) { return height - y(d.value); });
-
+        .attr("x", function(d) { return 0})
+        .attr("width", function(d) { return  x(d.value); });
 };
+
+//===================INITIALIZE=================///
+
+(async function(){
+  let init = await getYearData(currentYear);
+    updateGraph(empty);
+    updateGraph(init);
+})();
