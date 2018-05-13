@@ -1,12 +1,14 @@
 /*
 TODO:
--swap explantory text
+-resort countries according to value for each category
 */
 //=============START ==============//
+let toolTip, x, y, xAxis, yAxis, svg;
 let currentYear = 2013;
 let currentCategory = "IW_HADI"
 let yearData = [];
 let unit = "USD";
+let colors = ["#85D1A7", "#F4D35E", "#EE964B", "#F95738", "#5895d0"];
 const categories = [
   {name: 'IW_HADI', unit: 'USD'},
   {name: 'IW_HNFW', unit: 'USD'},
@@ -218,46 +220,50 @@ function getCategoryData(category){
       graphdata.push(row);
     }
 
-    //sort alphabetically
+    // sort alphabetically
     graphdata.sort(function(a, b) {
         return (a.label < b.label) ? -1 : (a.label > b.label) ? 1 : 0;
     });
+
+    // graphdata.sort(function(a, b) {
+    //     return b.value - a.value;
+    // });
+    // console.log(graphdata);
     return graphdata;
 };
 
 //=================D3 SETUP===================//
+function setupD3(){
+  margin = {
+    top: 0,
+    right: (parseInt(d3.select('.svg').style('width'), 10)/15),
+    bottom: $( window ).width() > 600 ? 50 : 40,
+    left: $( window ).width() > 600 ? 120 : 95
+    },
+    width = parseInt(d3.select('.svg').style('width'), 10) - margin.left - margin.right,
+    height = parseInt(d3.select('.svg').style('height'), 10) - margin.top - margin.bottom;
+  toolTip = d3.select(".svg").append("div").attr("class", "toolTip");
 
-let colors = ["#85D1A7", "#F4D35E", "#EE964B", "#F95738", "#5895d0"];
+  x = d3.scaleLinear()
+          .range([0, width]);
 
-let margin = {
-  top: 0,
-  right: (parseInt(d3.select('.svg').style('width'), 10)/15),
-  bottom: $( window ).width() > 600 ? 50 : 40,
-  left: $( window ).width() > 600 ? 120 : 95
-  },
-  width = parseInt(d3.select('.svg').style('width'), 10) - margin.left - margin.right,
-  height = parseInt(d3.select('.svg').style('height'), 10) - margin.top - margin.bottom;
-let toolTip = d3.select(".svg").append("div").attr("class", "toolTip");
+  y =  d3.scaleBand()
+          .rangeRound([0, height]);
 
-let x = d3.scaleLinear()
-        .range([0, width]);
+  xAxis = d3.axisBottom(x); //unitFormat()
+  yAxis = d3.axisLeft(y).ticks(0);
 
-let y =  d3.scaleBand()
-        .rangeRound([0, height]);
+  svg = d3.select(".svg").append("svg")
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-let xAxis = d3.axisBottom(x); //unitFormat()
-let yAxis = d3.axisLeft(y).ticks(0);
-
-let svg = d3.select(".svg").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis);
+  svg.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + height + ")")
+          .call(xAxis);
+}
 
 //=================GRAPH BUILDER===================//
 
@@ -350,8 +356,14 @@ function updateGraph(dataset) {
 
 //===================INITIALIZE=================///
 
-(async function(){
+(()=> loadSVG())();
+window.onresize = ()=>{
+  $('.svg').empty();
+  loadSVG();
+}
+async function loadSVG(){
+  setupD3();
   let init = await getYearData(currentYear);
-    updateGraph(empty);
-    updateGraph(init);
-})();
+  updateGraph(empty);
+  updateGraph(init);
+}

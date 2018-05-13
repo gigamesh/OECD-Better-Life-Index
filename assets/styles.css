@@ -18,7 +18,7 @@ body {
     justify-content: center;
     align-items: center;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    width: 100vw;
+    /* width: 100vw; */
     min-height: 800px;
     height: 100vh;
     text-align: center;
@@ -73,6 +73,11 @@ p {
 .header div, .toolTip div {
   white-space: pre;
   display: inline-block;
+}
+
+svg {
+  width: 100%;
+  height: auto;
 }
 
 .svg {
@@ -179,6 +184,7 @@ text.label{
 }
 
 .direction-arrow {
+    user-select: none;
   display: inline-block;
   font-family: 'Megrim', cursive;
   color: #888;
