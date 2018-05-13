@@ -337,7 +337,7 @@ function updateGraph(dataset) {
               if(unit !=='USD' && unit !== 'Percentage'){
                 append = unit;
               }
-              return `<h4><div><strong>${d.label}: </strong></div>
+              return `<h4><div><strong>${d.label} - </strong></div>
                 <div>${formatted} ${append}</h4></div><p>${info}</p>`
             });
         });
