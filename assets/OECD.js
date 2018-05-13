@@ -21,7 +21,7 @@ const categories = [
   {name: 'HS_LEB', unit: 'Years'},
   {name: 'HS_SFRH', unit: 'Percentage'},
   {name: 'SW_LIFS', unit: '(Avg Score)'},
-  {name: 'PS_REPH', unit: 'Murders Per 100k Inhabitants'},
+  {name: 'PS_REPH', unit: 'Murders Per 100k'},
   {name: 'WL_TNOW', unit: 'Hours Per Year'}
 ]
 
@@ -274,7 +274,7 @@ function updateGraph(dataset) {
       switch(unit){
         case "USD": return d => "$" + d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         case "Percentage": return d => d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "%";
-        default: return d3.format(",.0f");
+        default: return d3.format(",.2f");
       }
     }
 
@@ -334,9 +334,6 @@ function updateGraph(dataset) {
               return `<h4><div><strong>${d.label}: </strong></div>
                 <div>${formatted} ${append}</h4></div><p>${info}</p>`
             });
-            // toolTip.children('div').style("white-space","pre");
-            // toolTip.children('div').style("display","inline-block");
-
         });
 
     bar.on("mouseout", function(d){
