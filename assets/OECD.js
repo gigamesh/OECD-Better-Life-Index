@@ -1,4 +1,9 @@
 /*
+The D3 logic in this project was built off of this as a starting point:
+http://bl.ocks.org/juan-cb/1afee8f2cae799e86707
+The MIT License (MIT)
+Copyright (c) 2015 Juan Cruz-Benito. http://juancb.es
+
 TODO:
 -resort countries according to value for each category
 */
