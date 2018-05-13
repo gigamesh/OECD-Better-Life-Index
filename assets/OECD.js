@@ -331,8 +331,12 @@ function updateGraph(dataset) {
               if(unit !=='USD' && unit !== 'Percentage'){
                 append = unit;
               }
-              return `<h4><strong>${d.label}: </strong>${formatted} ${append}</h4><p>${info}</p>`
+              return `<h4><div><strong>${d.label}: </strong></div>
+                <div>${formatted} ${append}</h4></div><p>${info}</p>`
             });
+            // toolTip.children('div').style("white-space","pre");
+            // toolTip.children('div').style("display","inline-block");
+
         });
 
     bar.on("mouseout", function(d){

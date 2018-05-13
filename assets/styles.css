@@ -70,8 +70,8 @@ p {
     font-size: 4em;
 }
 
-.header div {
-   white-space: pre;
+.header div, .toolTip div {
+  white-space: pre;
   display: inline-block;
 }
 
@@ -110,16 +110,15 @@ label {
     position: absolute;
     display: none;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
     flex-direction: column;
     width: 220px;
-    height: 160px;
+    height: 170px;
     background: none repeat scroll 0 0 white;
     border-radius: 5px;
     box-shadow: 0 0 25px #555;
     font: 16px sans-serif;
     padding: 10px 10px 0;
-    text-align: center;
 }
 .toolTip p {
   font-size: 14px
